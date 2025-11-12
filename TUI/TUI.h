@@ -1,0 +1,14 @@
+#pragma once
+#include <iostream>
+#include <vector>
+#include <thread>
+#include <chrono>
+#include <atomic>
+#include "Desktop.h"
+#include "Label.h"
+#include "Button.h"
+#include "ASCIIArt.h"
+#include "AnimatedASCIIArt.h"
+#include "Box.h"
+#include <fcntl.h>
+#include <io.h>
