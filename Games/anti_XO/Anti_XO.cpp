@@ -77,9 +77,14 @@ Player<char>* Anti_XO_UI::create_player(string& name, char symbol, PlayerType ty
 Move<char>* Anti_XO_UI::get_move(Player<char>* player)
 {
     int r, c;
-    cout << player->get_name() << " (" << player->get_symbol()
-         << ") enter your move (row col): ";
-    cin >> r >> c;
+    
+    if (player->get_type() == PlayerType::HUMAN) {
+        cout << player->get_name() << " (" << player->get_symbol()
+             << ") enter your move (row col): ";
+        cin >> r >> c;
+    } else if (player->get_type() == PlayerType::COMPUTER) {
+        r = std::rand()%5, c = std::rand()%5;
+    }
 
     return new Move<char>(r, c, player->get_symbol());
 }

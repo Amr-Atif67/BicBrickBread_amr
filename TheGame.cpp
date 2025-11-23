@@ -11,6 +11,8 @@
 #include <memory>   // Required for unique_ptr
 #include "Games/XO_inf/XO_inf.h" 
 #include "Games/Four_in_a_row/four.h" 
+#include "Games/anti_XO/Anti_XO.h" 
+#include "Games/Large_Tic_Tac_Toe/Large_Tic_Tac_Toe.h" ///> Required for the game Board and UI
 #include "header\BoardGame_Classes.h"
 #include "header\XO_Classes.h"
 
@@ -40,7 +42,7 @@ int main() {
     while (!finish) {
         int choice;
         cout << "Choose a game:\n";
-        cout << "1)XO \n2)xo_inf\n3)Four_in_a_row\n5)Exit\n";
+        cout << "1)XO \n2)xo_inf\n3)Four_in_a_row\n4)Anti_XO\n5)5x5_XO\n6)Exit\n";
         cin >> choice;
         if (choice == 1) {
             // Create an instance of the specific UI for X-O using a pointer
@@ -86,19 +88,45 @@ int main() {
         }
 
         else if (choice==3){
-               UI<char>* game_ui = new FOUR_UI();
+            UI<char>* game_ui = new FOUR_UI();
             Board<char>* four_board = new FOUR_Board();
             Player<char>** players = game_ui->setup_players();
             GameManager<char> FOUR_game(four_board, players, game_ui);
-           FOUR_game.run();
+            FOUR_game.run();
             delete four_board;
             for (int i = 0; i < 2; ++i) {
                 delete players[i];
             }
             delete[] players;
         }
-        
+
         else if (choice == 4) {
+            UI<char>* game_ui = new Anti_XO_UI();
+            Board<char>* anti_board = new Anti_XO_Board();
+            Player<char>** players = game_ui->setup_players();
+            GameManager<char> anti_game(anti_board, players, game_ui);
+            anti_game.run();
+            delete anti_board;
+            for (int i = 0; i < 2; ++i) {
+                delete players[i];
+            }
+            delete[] players;
+        }
+
+        else if (choice == 5) {
+            UI<char>* game_ui = new Large_XO_UI();
+            Board<char>* large_board = new Large_XO_Board();
+            Player<char>** players = game_ui->setup_players();
+            GameManager<char> large_game(large_board, players, game_ui);
+            large_game.run();
+            delete large_board;
+            for (int i = 0; i < 2; ++i) {
+                delete players[i];
+            }
+            delete[] players;
+        }
+        
+        else if (choice == 6) {
             finish = 1;
         }
     }
