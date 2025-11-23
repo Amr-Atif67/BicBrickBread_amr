@@ -1,39 +1,35 @@
-#ifndef XO_inf_H
-#define X_inf_H
-#include <queue>
+
+#ifndef FOUR_H
+#define FOUR_H
 #include "../../header/BoardGame_Classes.h"
 using namespace std;
 
-class XO_inf_Board : public Board<char> {
+
+class FOUR_Board : public Board<char> {
 private:
     char blank_symbol = '.'; ///< Character used to represent an empty cell on the board.
-    queue<pair<int, int>> history1;
-    queue<pair<int, int>> history2;
-public:
+    int last_row[7]{};
 
-    XO_inf_Board();
+public:
+    FOUR_Board();
     bool update_board(Move<char>* move);
     bool is_win(Player<char>* player);
     bool is_lose(Player<char>*) { return false; };
     bool is_draw(Player<char>* player);
     bool game_is_over(Player<char>* player);
+    // void score();
 };
 
 
-
-class XO_inf_UI : public UI<char> {
+class FOUR_UI : public UI<char> {
 public:
 
-    XO_inf_UI();
+    FOUR_UI();
 
-    ~XO_inf_UI() {};
-
-
+   
+    ~FOUR_UI() {};
     Player<char>* create_player(string& name, char symbol, PlayerType type);
-
-
     virtual Move<char>* get_move(Player<char>* player);
 };
 
 #endif 
-
