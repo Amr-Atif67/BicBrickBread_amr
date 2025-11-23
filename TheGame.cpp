@@ -11,6 +11,7 @@
 #include <memory>   // Required for unique_ptr
 #include "Games/XO_inf/XO_inf.h" 
 #include "Games/Four_in_a_row/four.h" 
+#include "Games/XO_num/xo_num.h" 
 #include "header\BoardGame_Classes.h"
 #include "header\XO_Classes.h"
 
@@ -41,7 +42,7 @@ int main()
     while (!finish) {
         int choice;
         cout << "Choose a game:\n";
-        cout << "1)XO \n2)xo_inf\n3)Four_in_a_row\n5)Exit\n";
+        cout << "1)XO \n2)xo_inf\n3)Four_in_a_row\n4)Numerical XO\n5)Exit\n";
         cin >> choice;
         if (choice == 1) {
             // Create an instance of the specific UI for X-O using a pointer
@@ -98,8 +99,20 @@ int main()
             }
             delete[] players;
         }
+           else if (choice==4){
+               UI<char>* game_ui = new XO_NUM_UI();
+            Board<char>* num_board = new XO_NUM_Board();
+            Player<char>** players = game_ui->setup_players();
+            GameManager<char> NUM_game(num_board, players, game_ui);
+           NUM_game.run();
+            delete num_board;
+            for (int i = 0; i < 2; ++i) {
+                delete players[i];
+            }
+            delete[] players;
+        }
         
-        else if (choice == 4) {
+        else if (choice == 5) {
             finish = 1;
         }
     }
