@@ -82,6 +82,13 @@ public:
         return board;
     }
 
+    /**
+     * @brief Return access to the wanted index
+     */
+    std::vector<char>& operator[](int i) {
+        return board[i];
+    }
+
     /** @brief Get number of rows. */
     int get_rows() const { return rows; }
 
@@ -126,7 +133,7 @@ class Player {
 protected:
     string name;         ///< Player name
     PlayerType type;     ///< Player type (e.g., HUMAN or COMPUTER)
-    T symbol;            ///< Player’s symbol on board
+    T symbol;            ///< Playerï¿½s symbol on board
     Board<T>* boardPtr;  ///< Pointer to the game board
 
 public:
@@ -184,7 +191,15 @@ protected:
             cout << i + 1 << ". " << options[i] << "\n";
         int choice;
         cin >> choice;
-        return (choice == 2) ? PlayerType::COMPUTER : PlayerType::HUMAN;
+        if (choice == 1) {
+            return PlayerType::HUMAN;
+        } else if (choice == 2) {
+            return PlayerType::COMPUTER;
+        } else if (choice == 3) {
+            return PlayerType::AI;
+        } else {
+            return PlayerType::RANDOM;
+        }
     }
 
 public:

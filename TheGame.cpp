@@ -5,24 +5,26 @@
  * All dynamically allocated objects are properly deleted at the end.
  */
 
-#include <iostream> // Required for input/output operations (cout, cin)
-#include <string>   // Required for string
-#include <vector>   // Required for vector
-#include <memory>   // Required for unique_ptr
+#include <iostream>    // Required for input/output operations (cout, cin)
+#include <string>      // Required for string
+#include <vector>      // Required for vector
+#include <memory>      // Required for unique_ptr
+#include <limits>      // Required for input clearing
+#include <stdexcept>   // Required for exceptions
+
 #include "Games/XO_inf/XO_inf.h" 
 #include "Games/Four_in_a_row/four.h" 
 #include "Games/anti_XO/Anti_XO.h" 
 #include "Games/Large_Tic_Tac_Toe/Large_Tic_Tac_Toe.h" ///> Required for the game Board and UI
-#include "header\BoardGame_Classes.h"
-#include "header\XO_Classes.h"
+#include "header/BoardGame_Classes.h"
+#include "header/XO_Classes.h"
 
- 
 using namespace std;
 
 /**
  * @brief Main function to run the X-O game.
  *
- * This function orchestrates the game by:
+ * This function manage the game by:
  * - Initializing the random number generator
  * - Creating the X-O specific UI and board
  * - Setting up players using the UI
@@ -35,102 +37,92 @@ int main() {
 
     srand(static_cast<unsigned int>(time(0)));  // Seed the random number generator
 
-   
-    // Temporary menu to test and run different games --Aalaa
+    // Temporary menu to test and run different games Aalaa, ALi Wael
+    bool finish = false;
 
-    bool finish = 0;
     while (!finish) {
-        int choice;
-        cout << "Choose a game:\n";
-        cout << "1)XO \n2)xo_inf\n3)Four_in_a_row\n4)Anti_XO\n5)5x5_XO\n6)Exit\n";
-        cin >> choice;
-        if (choice == 1) {
-            // Create an instance of the specific UI for X-O using a pointer
-            UI<char>* game_ui = new XO_UI();
+        int choice = 0;
 
-            // Create the game board. For X-O, this is an X_O_Board.
-            Board<char>* xo_board = new X_O_Board();
+        // ======================= MENU =======================
+        cout << "==================== X-O Game Menu ====================\n";
+        cout << "1) Classic XO\n";
+        cout << "2) Infinite XO (XO_inf)\n";
+        cout << "3) Four in a Row\n";
+        cout << "4) Anti XO\n";
+        cout << "5) 5x5 XO (Large Tic-Tac-Toe)\n";
+        cout << "6) Exit\n";
+        cout << "=======================================================\n";
+        cout << "Enter your choice [1-6]: ";
 
-            // Use the UI to set up the players for the game.
-            // The UI returns a dynamically allocated array of Player pointers.
+        try {
+            if (!(cin >> choice)) {
+                throw runtime_error("Invalid input: must be an integer.");
+            }
+
+            if (choice < 1 || choice > 6) {
+                throw out_of_range("Choice must be an integer between 1 and 6.");
+            }
+
+            if (choice == 6) {
+                cout << "Exiting the game. Goodbye!\n";
+                finish = true;
+                continue;
+            }
+
+            // Pointers for the UI and Board
+            UI<char>* game_ui = nullptr;
+            Board<char>* game_board = nullptr;
+
+            // ================= SELECT GAME =================
+            switch (choice) {
+                case 1:
+                    game_ui = new XO_UI();
+                    game_board = new X_O_Board();
+                    break;
+                case 2:
+                    game_ui = new XO_inf_UI();
+                    game_board = new XO_inf_Board();
+                    break;
+                case 3:
+                    game_ui = new FOUR_UI();
+                    game_board = new FOUR_Board();
+                    break;
+                case 4:
+                    game_ui = new Anti_XO_UI();
+                    game_board = new Anti_XO_Board();
+                    break;
+                case 5:
+                    game_ui = new Large_XO_UI();
+                    game_board = new Large_XO_Board();
+                    break;
+                default:
+                    throw out_of_range("Unexpected choice value.");
+            }
+
+            // ================= SETUP PLAYERS =================
+            cout << "\n--- Setting up players ---\n";
             Player<char>** players = game_ui->setup_players();
 
-            // Create the game manager with the board and the array of players.
-            GameManager<char> x_o_game(xo_board, players, game_ui);
+            // ================= START GAME =================
+            cout << "\n--- Starting the game ---\n";
+            GameManager<char> game(game_board, players, game_ui);
+            game.run();
+            cout << "\n--- Game finished ---\n";
 
-            // Run the game loop.
-            x_o_game.run();
-
-            // --- Cleanup ---
-            // Delete the dynamically allocated board object.
-            delete xo_board;
-
-            // Delete the individual player objects.
-            for (int i = 0; i < 2; ++i)
-            {
-                delete players[i];
-            }
-            // Delete the dynamically allocated array of player pointers itself.
+            // ================= CLEANUP =================
+            delete game_board;
+            for (int i = 0; i < 2; ++i) delete players[i];
             delete[] players;
+            delete game_ui;
 
-        }
-        else if (choice == 2) {
-            UI<char>* game_ui = new XO_inf_UI();
-            Board<char>* inf_board = new XO_inf_Board();
-            Player<char>** players = game_ui->setup_players();
-            GameManager<char> XO_inf_game(inf_board, players, game_ui);
-            XO_inf_game.run();
-            delete inf_board;
-            for (int i = 0; i < 2; ++i) {
-                delete players[i];
-            }
-            delete[] players;
-        }
-
-        else if (choice==3){
-            UI<char>* game_ui = new FOUR_UI();
-            Board<char>* four_board = new FOUR_Board();
-            Player<char>** players = game_ui->setup_players();
-            GameManager<char> FOUR_game(four_board, players, game_ui);
-            FOUR_game.run();
-            delete four_board;
-            for (int i = 0; i < 2; ++i) {
-                delete players[i];
-            }
-            delete[] players;
-        }
-
-        else if (choice == 4) {
-            UI<char>* game_ui = new Anti_XO_UI();
-            Board<char>* anti_board = new Anti_XO_Board();
-            Player<char>** players = game_ui->setup_players();
-            GameManager<char> anti_game(anti_board, players, game_ui);
-            anti_game.run();
-            delete anti_board;
-            for (int i = 0; i < 2; ++i) {
-                delete players[i];
-            }
-            delete[] players;
-        }
-
-        else if (choice == 5) {
-            UI<char>* game_ui = new Large_XO_UI();
-            Board<char>* large_board = new Large_XO_Board();
-            Player<char>** players = game_ui->setup_players();
-            GameManager<char> large_game(large_board, players, game_ui);
-            large_game.run();
-            delete large_board;
-            for (int i = 0; i < 2; ++i) {
-                delete players[i];
-            }
-            delete[] players;
-        }
-        
-        else if (choice == 6) {
-            finish = 1;
+        } catch (const exception& e) {
+            cerr << "\n[Error] " << e.what() << "\nPlease try again.\n\n";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            system("pause");
+            cout << "\n";
         }
     }
+
     return 0; // Exit successfully
 }
-
-// =====================================================================

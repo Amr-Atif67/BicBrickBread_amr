@@ -1,6 +1,7 @@
 #ifndef Large_Tic_Tac_Toe
 
 #include "../../header/BoardGame_Classes.h"
+#include "../../header/AI.h"
 
 
 /**
@@ -62,6 +63,11 @@ public:
      */
     Large_XO_UI();
     ~Large_XO_UI() {}
+
+    /**
+     * @brief Setup Players
+     */
+    Player<char>** setup_players() override;
 
     /**
      * @brief Create new player

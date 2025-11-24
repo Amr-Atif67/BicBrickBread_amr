@@ -11,6 +11,7 @@
 #define XO_CLASSES_H
 
 #include "BoardGame_Classes.h"
+#include "../../header/AI.h"
 using namespace std;
 
 /**
@@ -75,7 +76,7 @@ public:
  * @brief User Interface class for the X-O (Tic-Tac-Toe) game.
  *
  * Inherits from the generic `UI<char>` base class and provides
- * X-O–specific functionality for player setup and move input.
+ * X-Oï¿½specific functionality for player setup and move input.
  *
  * @see UI
  */
@@ -92,6 +93,11 @@ public:
      * @brief Destructor for XO_UI.
      */
     ~XO_UI() {};
+
+    /**
+     * @brief Setup Players
+     */
+    Player<char>** setup_players() override;
 
     /**
      * @brief Creates a player of the specified type.

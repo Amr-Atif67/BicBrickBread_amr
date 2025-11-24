@@ -88,6 +88,22 @@ bool X_O_Board::game_is_over(Player<char> *player)
 
 XO_UI::XO_UI() : UI<char>("Weclome to FCAI X-O Game by Dr El-Ramly", 3) {}
 
+Player<char> **XO_UI::setup_players()
+{
+    Player<char>** players = new Player<char>*[2];
+    vector<string> type_options = { "Human", "Computer", "AI", "Random"};
+
+    string nameX = get_player_name("Player X");
+    PlayerType typeX = get_player_type_choice("Player X", type_options);
+    players[0] = create_player(nameX, static_cast<char>('X'), typeX);
+
+    string nameO = get_player_name("Player O");
+    PlayerType typeO = get_player_type_choice("Player O", type_options);
+    players[1] = create_player(nameO, static_cast<char>('O'), typeO);
+
+    return players;
+}
+
 Player<char> *XO_UI::create_player(string &name, char symbol, PlayerType type)
 {
     // Create player based on type
@@ -98,25 +114,19 @@ Player<char> *XO_UI::create_player(string &name, char symbol, PlayerType type)
 }
 
 Move<char> *XO_UI::get_move(Player<char> *player)
-{ // que history for player one
-    //
-    //
-    //
-    // que for player two
-
-    int x, y;
-
-    if (player->get_type() == PlayerType::HUMAN)
-    {
-        cout << "\nPlease enter your move x and y (0 to 2): ";
-        cin >> x >> y;
-
-        // implement here
+{ 
+    int r, c;
+    
+    if (player->get_type() == PlayerType::HUMAN) {
+        cout << player->get_name() << " (" << player->get_symbol()
+        << ") enter your move (row col): ";
+        cin >> r >> c;
+    } else if (player->get_type() == PlayerType::COMPUTER) {
+        r = std::rand()%5, c = std::rand()%5;
+    } else if (player->get_type() == PlayerType::AI) {
+        std::pair move = AI::bestMove(player, true);
+        r = move.first, c = move.second;
     }
-    else if (player->get_type() == PlayerType::COMPUTER)
-    {
-        x = rand() % player->get_board_ptr()->get_rows();
-        y = rand() % player->get_board_ptr()->get_columns();
-    }
-    return new Move<char>(x, y, player->get_symbol());
+    
+    return new Move<char>(r, c, player->get_symbol());
 }
