@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BoardGame_Classes.h"
+ #include "../../header/BoardGame_Classes.h"
 
 class Anti_XO_Board : public Board<char>
 {

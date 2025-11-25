@@ -86,7 +86,7 @@ bool XO_inf_Board::game_is_over(Player<char>* player) {
 
 //--------------------------------------- XO_UI Implementation
 
-XO_inf_UI::XO_inf_UI() : UI<char>("Weclome to FCAI X-O Game by Dr El-Ramly", 3) {}
+XO_inf_UI::XO_inf_UI() : UI<char>("Infinite XO", 3) {}
 
 Player<char>* XO_inf_UI::create_player(string& name, char symbol, PlayerType type) {
     // Create player based on type

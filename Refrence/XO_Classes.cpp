@@ -123,10 +123,10 @@ Move<char> *XO_UI::get_move(Player<char> *player)
         cin >> r >> c;
     } else if (player->get_type() == PlayerType::COMPUTER) {
         r = std::rand()%5, c = std::rand()%5;
-    } else if (player->get_type() == PlayerType::AI) {
-        std::pair move = AI::bestMove(player, true);
-        r = move.first, c = move.second;
-    }
+     } //else if (player->get_type() == PlayerType::AI) {
+    //     std::pair move = AI::bestMove(player, true);
+    //     r = move.first, c = move.second;
+    // }
     
     return new Move<char>(r, c, player->get_symbol());
 }

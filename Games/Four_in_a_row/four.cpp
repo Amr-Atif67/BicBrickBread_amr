@@ -96,7 +96,7 @@ bool FOUR_Board::game_is_over(Player<char> *player)
 }
 
 //--------------------------------------- XO_UI Implementation
-FOUR_UI::FOUR_UI() : UI<char>("Weclome to FCAI X-O Game by Dr El-Ramly", 3) {}
+FOUR_UI::FOUR_UI() : UI<char>("Four In A Rwo", 3) {}
 
 Player<char> *FOUR_UI::create_player(string &name, char symbol, PlayerType type)
 {

@@ -11,7 +11,7 @@
 #define XO_CLASSES_H
 
 #include "BoardGame_Classes.h"
-#include "../../header/AI.h"
+// #include "../../header/AI.h"
 using namespace std;
 
 /**

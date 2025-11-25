@@ -12,10 +12,21 @@
 #include <limits>      // Required for input clearing
 #include <stdexcept>   // Required for exceptions
 
+#include <iostream>    // Required for input/output operations (cout, cin)
+#include <string>      // Required for string
+#include <vector>      // Required for vector
+#include <memory>      // Required for unique_ptr
+#include <limits>      // Required for input clearing
+#include <stdexcept>   // Required for exceptions
+
 #include "Games/XO_inf/XO_inf.h" 
 #include "Games/Four_in_a_row/four.h" 
+#include "Games/XO_num/xo_num.h" 
 #include "Games/anti_XO/Anti_XO.h" 
 #include "Games/Large_Tic_Tac_Toe/Large_Tic_Tac_Toe.h" ///> Required for the game Board and UI
+#include "header/BoardGame_Classes.h"
+#include "header/XO_Classes.h"
+
 #include "header/BoardGame_Classes.h"
 #include "header/XO_Classes.h"
 
@@ -24,6 +35,7 @@ using namespace std;
 /**
  * @brief Main function to run the X-O game.
  *
+ * This function manage the game by:
  * This function manage the game by:
  * - Initializing the random number generator
  * - Creating the X-O specific UI and board
@@ -50,20 +62,21 @@ int main() {
         cout << "3) Four in a Row\n";
         cout << "4) Anti XO\n";
         cout << "5) 5x5 XO (Large Tic-Tac-Toe)\n";
-        cout << "6) Exit\n";
+        cout << "6) Numerical Tic-Tac-Toe\n";
+        cout << "7) Exit\n";
         cout << "=======================================================\n";
-        cout << "Enter your choice [1-6]: ";
+        cout << "Enter your choice [1-7]: ";
 
         try {
             if (!(cin >> choice)) {
                 throw runtime_error("Invalid input: must be an integer.");
             }
 
-            if (choice < 1 || choice > 6) {
+            if (choice < 1 || choice > 7) {
                 throw out_of_range("Choice must be an integer between 1 and 6.");
             }
 
-            if (choice == 6) {
+            if (choice == 7) {
                 cout << "Exiting the game. Goodbye!\n";
                 finish = true;
                 continue;
@@ -92,8 +105,12 @@ int main() {
                     game_board = new Anti_XO_Board();
                     break;
                 case 5:
-                    game_ui = new Large_XO_UI();
-                    game_board = new Large_XO_Board();
+                   game_ui = new Large_XO_UI();
+                   game_board = new Large_XO_Board();
+                   break;
+                case 6:
+                    game_ui = new  XO_NUM_UI();
+                    game_board = new XO_NUM_Board();
                     break;
                 default:
                     throw out_of_range("Unexpected choice value.");
@@ -109,12 +126,13 @@ int main() {
             game.run();
             cout << "\n--- Game finished ---\n";
 
+           
             // ================= CLEANUP =================
             delete game_board;
             for (int i = 0; i < 2; ++i) delete players[i];
             delete[] players;
             delete game_ui;
-
+            
         } catch (const exception& e) {
             cerr << "\n[Error] " << e.what() << "\nPlease try again.\n\n";
             cin.clear();
