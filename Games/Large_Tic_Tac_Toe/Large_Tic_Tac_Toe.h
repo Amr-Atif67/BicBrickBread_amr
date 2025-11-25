@@ -3,6 +3,7 @@
 #include "../../header/BoardGame_Classes.h"
 #include "../../header/Custom_UI.h"
 #include "../../header/AI.h"
+#include "../../Neural_Network/Include/NeuralNetwork.h"
 
 
 /**
@@ -77,11 +78,9 @@ public:
      */
     Move<char>* get_move(Player<char>* player) override;
 
-    int evaluate(Large_XO_Board* board, Player<char>* player);
-
-    int minimax(Player<char>* player, bool maximizing, int alpha, int beta, int depth);
-
-    std::pair<int,int> bestMove(Player<char>* player, int depth);
+    std::pair<int,int> bestMove(Player<char>* player);
+private:
+    NeuralNetwork nn;
 };
 
 #endif // Large_Tic_Tac_Toe

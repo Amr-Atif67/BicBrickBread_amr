@@ -19,7 +19,7 @@ public:
     }
 
     // Minimax with alpha-beta pruning
-    virtual int minimax(std::pair<int,int> pos, bool aiTurn, Player<char>* player, int alpha, int beta, int depth) {
+    virtual int minimax(bool aiTurn, Player<char>* player, int alpha, int beta, int depth) {
         auto* board = player->get_board_ptr();
         char ai = player->get_symbol();
         char opp = (ai == 'X' ? 'O' : 'X');
@@ -36,18 +36,14 @@ public:
                         Move<char> move(r, c, ai);
                         board->update_board(&move);
 
-                        int score = minimax({r,c}, false, player, alpha, beta, depth - 1);
+                        int score = minimax(false, player, alpha, beta, depth - 1);
 
                         Move<char> undo(r, c, '.');
                         board->update_board(&undo);
 
                         bestScore = std::max(bestScore, score);
-                        alpha = std::max(alpha, score);
-
-                        if (beta <= alpha) break;
                     }
                 }
-                if (beta <= alpha) break;
             }
             return bestScore;
         } else {
@@ -58,18 +54,14 @@ public:
                         Move<char> move(r, c, opp);
                         board->update_board(&move);
 
-                        int score = minimax({r,c}, true, player, alpha, beta, depth - 1);
+                        int score = minimax(true, player, alpha, beta, depth - 1);
 
                         Move<char> undo(r, c, '.');
                         board->update_board(&undo);
 
                         bestScore = std::min(bestScore, score);
-                        beta = std::min(beta, score);
-
-                        if (beta <= alpha) break;
                     }
                 }
-                if (beta <= alpha) break;
             }
             return bestScore;
         }
@@ -88,7 +80,7 @@ public:
                     Move<char> m(r, c, ai);
                     board->update_board(&m);
 
-                    int score = minimax({r,c}, false, player, -INF, INF, depth - 1);
+                    int score = minimax(false, player, -INF, INF, depth - 1);
 
                     Move<char> undo(r, c, '.');
                     board->update_board(&undo);

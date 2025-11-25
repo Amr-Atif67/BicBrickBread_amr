@@ -109,7 +109,7 @@ bool X_O_Board::is_draw(Player<char> *player)
 
 bool X_O_Board::game_is_over(Player<char> *player)
 {
-    return is_win(player) || is_draw(player);
+    return is_win(player) || is_draw(player) || is_lose(player);
 }
 
 //--------------------------------------- XO_UI Implementation
