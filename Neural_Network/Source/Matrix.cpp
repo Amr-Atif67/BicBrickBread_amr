@@ -1,103 +1,108 @@
 #include "Matrix.h"
-#include <cstdlib>
-#include <ctime>
-#include <stdexcept>
+#include <random>
 #include <cmath>
+#include <iomanip>
 
-/// Constructor: create a matrix with optional zero initialization
-Matrix::Matrix(int rows, int cols, bool zero)
-    : rows(rows), cols(cols), data(rows * cols, zero ? 0.0 : 1.0) { }
-
-/// Constructor: create a matrix from a flat vector of values
-Matrix::Matrix(const std::vector<double>& values, int rows, int cols)
-    : rows(rows), cols(cols), data(values) {
-    if (values.size() != rows * cols)
-        throw std::runtime_error("Vector size does not match matrix dimensions");
+Matrix::Matrix(int rows_, int cols_, bool zero) : rows(rows_), cols(cols_) {
+    data.assign(rows*cols, zero ? 0.0 : 1.0);
 }
 
-/// Generate a random matrix in [min, max]
-Matrix Matrix::random(int rows, int cols, double min, double max) {
-    std::srand(static_cast<unsigned int>(std::time(nullptr)));
+Matrix::Matrix(const std::vector<double>& values, int rows_, int cols_) 
+    : rows(rows_), cols(cols_), data(values) {
+    if(values.size() != size_t(rows*cols))
+        throw std::runtime_error("Matrix constructor: size mismatch");
+}
+
+Matrix Matrix::random(int rows, int cols, double min, double max){
     Matrix m(rows, cols);
-    for (int i = 0; i < rows * cols; ++i)
-        m.data[i] = min + ((double)std::rand() / RAND_MAX) * (max - min);
+    std::mt19937 rng(std::random_device{}());
+    std::uniform_real_distribution<double> dist(min, max);
+    for(auto &val : m.data) val = dist(rng);
     return m;
 }
 
-/// Apply a function element-wise
-void Matrix::apply(const std::function<double(double)>& func) {
-    for (int i = 0; i < rows * cols; ++i)
-        data[i] = func(data[i]);
+void Matrix::apply(const std::function<double(double)>& func){
+    for(auto &val : data) val = func(val);
 }
 
-/// Element-wise multiplication (Hadamard product)
-void Matrix::hadamard(const Matrix& other) {
-    if (rows != other.rows || cols != other.cols)
-        throw std::runtime_error("Hadamard: dimension mismatch");
-    for (int i = 0; i < rows * cols; ++i)
-        data[i] *= other.data[i];
+void Matrix::hadamard(const Matrix& other){
+    if(rows != other.rows || cols != other.cols)
+        throw std::runtime_error("Hadamard: size mismatch");
+    for(int i=0;i<rows*cols;i++) data[i] *= other.data[i];
 }
 
-/// Transpose the matrix
-Matrix Matrix::transpose() const {
-    Matrix t(cols, rows);
-    for (int r = 0; r < rows; ++r)
-        for (int c = 0; c < cols; ++c)
-            t(c, r) = (*this)(r, c);
-    return t;
-}
-
-/// Element-wise addition
 Matrix Matrix::operator+(const Matrix& other) const {
-    if (rows != other.rows || cols != other.cols)
-        throw std::runtime_error("Addition: dimension mismatch");
+    if(rows != other.rows || cols != other.cols)
+        throw std::runtime_error("Addition: size mismatch");
     Matrix res(rows, cols);
-    for (int i = 0; i < rows * cols; ++i)
-        res.data[i] = data[i] + other.data[i];
+    for(int i=0;i<rows*cols;i++) res.data[i] = data[i] + other.data[i];
     return res;
 }
 
-/// Element-wise subtraction
 Matrix Matrix::operator-(const Matrix& other) const {
-    if (rows != other.rows || cols != other.cols)
-        throw std::runtime_error("Subtraction: dimension mismatch");
+    if(rows != other.rows || cols != other.cols)
+        throw std::runtime_error("Subtraction: size mismatch");
     Matrix res(rows, cols);
-    for (int i = 0; i < rows * cols; ++i)
-        res.data[i] = data[i] - other.data[i];
+    for(int i=0;i<rows*cols;i++) res.data[i] = data[i] - other.data[i];
     return res;
 }
 
-/// Matrix multiplication
-Matrix Matrix::operator*(const Matrix& other) const {
-    if (cols != other.rows)
-        throw std::runtime_error("Multiplication: size mismatch");
-    Matrix res(rows, other.cols, true);
-    for (int r = 0; r < rows; ++r) {
-        for (int c = 0; c < other.cols; ++c) {
+Matrix Matrix::transpose() const {
+    Matrix res(cols, rows);
+    for(int r=0;r<rows;r++)
+        for(int c=0;c<cols;c++)
+            res(c,r) = (*this)(r,c);
+    return res;
+}
+
+void Matrix::multiply(const Matrix& a, const Matrix& b, Matrix& result){
+    if(a.cols != b.rows) throw std::runtime_error("Multiplication: size mismatch");
+    result.resize(a.rows, b.cols);
+
+    for(int r=0;r<a.rows;r++){
+        for(int c=0;c<b.cols;c++){
             double sum = 0.0;
-            for (int k = 0; k < cols; ++k)
-                sum += (*this)(r, k) * other(k, c);
-            res(r, c) = sum;
+            for(int k=0;k<a.cols;k++)
+                sum += a.data[r*a.cols + k] * b.data[k*b.cols + c];
+            result.data[r*result.cols + c] = sum;
         }
     }
+}
+
+Matrix Matrix::operator*(const Matrix& other) const {
+    Matrix res(rows, other.cols);
+    multiply(*this, other, res);
     return res;
 }
 
-/// Pointer to raw data
-double* Matrix::dataPtr() {
-    return data.data();
+void Matrix::resize(int r, int c){
+    if(rows != r || cols != c){
+        rows = r;
+        cols = c;
+        data.assign(r*c, 0.0);
+    }
 }
 
-/// Const pointer to raw data
-const double* Matrix::dataPtr() const {
-    return data.data();
+std::ostream& operator<<(std::ostream &os, const Matrix &m)
+{
+    os << std::fixed << std::setprecision(4);
+
+    for (int r = 0; r < m.rows; ++r) {
+        os << "[ ";
+        for (int c = 0; c < m.cols; ++c) {
+            os << std::setw(10) << m(r, c);
+            if (c < m.cols - 1) os << ", ";
+        }
+        os << " ]\n";
+    }
+
+    return os;
 }
 
-/// Print matrix to console
 void Matrix::print() const {
-    for (int r = 0; r < rows; ++r) {
-        for (int c = 0; c < cols; ++c)
-            std::cout << (*this)(r, c) << " ";
+    for(int r=0;r<rows;r++){
+        for(int c=0;c<cols;c++)
+            std::cout << (*this)(r,c) << " ";
         std::cout << "\n";
     }
 }

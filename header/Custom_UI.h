@@ -52,7 +52,6 @@ protected:
             throw std::runtime_error("Error: Choice must be between 1 and 4.");
         }
 
-        // Only if-conditions allowed
         if (choice == 1) return PlayerType::HUMAN;
         if (choice == 2) return PlayerType::COMPUTER;
         if (choice == 3) return PlayerType::AI;
@@ -71,7 +70,7 @@ public:
      * @brief Display any message and pause.
      */
     virtual void display_message(string message) override {
-        std::cout << "\n " << message << "\n\n";
+        std::cout << "\n>>> " << message << "\n\n";
         system("pause");
     }
 
@@ -135,7 +134,7 @@ public:
      * @param matrix  The 2D matrix representing the board.
      */
     void display_board_matrix(const vector<vector<T>>& matrix) const override {
-        system("cls");
+        // system("cls");
         
         UI<T>::display_board_matrix(matrix);
     }

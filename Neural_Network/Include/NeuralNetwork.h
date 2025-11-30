@@ -24,8 +24,8 @@ public:
      * @param activationDerivative Derivative of activation function.
      */
     NeuralNetwork(const std::vector<int>& layerSizes,
-                  std::function<double(double)> activation,
-                  std::function<double(double)> activationDerivative);
+                  const std::vector<std::function<double(double)>>& activations,
+                  const std::vector<std::function<double(double)>>& activationDerivatives);
 
     /**
      * @brief Forward pass through all layers.
