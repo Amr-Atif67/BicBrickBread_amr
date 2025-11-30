@@ -1,17 +1,17 @@
 #pragma once
 
- #include "../../header/BoardGame_Classes.h"
+#include "../../header/BoardGame_Classes.h"
 
-class Anti_XO_Board : public Board<char>
+class PyramidXO_Board : public Board<char>
 {
 public:
-    Anti_XO_Board();
+    PyramidXO_Board();
 
     bool update_board(Move<char>* move) override;
 
     bool is_lose(Player<char>* player) override;
 
-    bool is_win(Player<char>* player) override { return false; }
+    bool is_win(Player<char>* player) override;
 
     bool is_draw(Player<char>* player) override;
 
@@ -19,15 +19,15 @@ public:
 };
 
 
-class Anti_XO_UI : public UI<char>
+class PyramidXO_UI : public UI<char>
 {
 public:
-    Anti_XO_UI();
-    ~Anti_XO_UI() {}
+    PyramidXO_UI();
+    ~PyramidXO_UI() {}
 
     Player<char>* create_player(std::string& name, char symbol, PlayerType type) override;
 
     Move<char>* get_move(Player<char>* player) override;
+
+    void display_board_matrix(const std::vector<std::vector<char>>& matrix) const override;
 };
-
-

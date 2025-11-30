@@ -6,7 +6,7 @@
 #include "../../header/AI.h"
 #include "../../Neural_Network/Include/NeuralNetwork.h"
 #include <memory>
-#include <cstdint> // Required for uint32_t
+#include <cstdint>
 
 /**
  * @brief Represents the 5x5 Tic-Tac-Toe Board, optimized using a Bit Board approach.
