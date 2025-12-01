@@ -134,7 +134,7 @@ public:
      * @param matrix  The 2D matrix representing the board.
      */
     void display_board_matrix(const vector<vector<T>>& matrix) const override {
-        // system("cls");
+        system("cls");
         
         UI<T>::display_board_matrix(matrix);
     }
