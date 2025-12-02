@@ -356,7 +356,7 @@ void Large_XO_UI::display_board_matrix(const vector<vector<char>> &matrix) const
         
         // Print each cell in the row (fetched from bitboard representation)
         for (int j = 0; j < cols; ++j)
-            cout << setw(cell_width) << (board == nullptr? '.' : board->getCell(i, j)) << " |";
+            cout << setw(cell_width) << (board == nullptr? board->getEmptyCell() : board->getCell(i, j)) << " |";
         
         // Print horizontal separator line after each row
         cout << "\n   " << string((cell_width + 2) * cols, '-') << "\n";

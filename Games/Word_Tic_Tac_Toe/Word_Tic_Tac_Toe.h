@@ -4,7 +4,6 @@
 #include "../../header/BoardGame_Classes.h"
 #include "../../header/Custom_UI.h"
 #include "../../header/AI.h"
-#include "../../Neural_Network/Include/NeuralNetwork.h"
 #include <cstdint>
 #include <set>
 #include <fstream>

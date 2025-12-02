@@ -29,6 +29,7 @@
 #include "header/BoardGame_Classes.h"
 #include "header/XO_Classes.h"
 #include "Games/Word_Tic_Tac_Toe/Word_Tic_Tac_Toe.h"
+#include "Games/Obstacles_Tic_Tac_Toe/Obstacles_Tic_Tac_Toe.h"
 
 #include "header/BoardGame_Classes.h"
 #include "header/XO_Classes.h"
@@ -86,20 +87,21 @@ int main() {
         cout << "7) Ultimate Tic-Tac-Toe\n";
         cout << "8) Pyramid XO\n";
         cout << "9) Word XO\n";
-        cout << "10) Exit\n";
+        cout << "10) Obstacles Tic-Tac-Toe XO\n";
+        cout << "11) Exit\n";
         cout << "=======================================================\n";
-        cout << "Enter your choice [1-9]: ";
+        cout << "Enter your choice [1-11]: ";
 
         try {
             if (!(cin >> choice)) {
                 throw runtime_error("Invalid input: must be an integer.");
             }
 
-            if (choice < 1 || choice > 10) {
+            if (choice < 1 || choice > 11) {
                 throw out_of_range("Choice must be an integer between 1 and 6.");
             }
 
-            if (choice == 10) {
+            if (choice == 11) {
                 cout << "Exiting the game. Goodbye!\n";
                 finish = true;
                 continue;
@@ -146,6 +148,11 @@ int main() {
                 case 9:
                     game_ui = new  Word_XO_UI();
                     game_board = new Word_XO_Board();
+                    break;
+
+                case 10:
+                    game_ui = new  Obstacles_UI();
+                    game_board = new Obstacles_Board();
                     break;
                 default:
                     throw out_of_range("Unexpected choice value.");
