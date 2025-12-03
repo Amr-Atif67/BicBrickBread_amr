@@ -22,11 +22,13 @@
 #include "Games/XO_inf/XO_inf.h" 
 #include "Games/Four_in_a_row/four.h" 
 #include "Games/XO_num/xo_num.h" 
+#include "Games/Ultimate_Tic_Tac_Toe/Ultimate.h" 
 #include "Games/anti_XO/Anti_XO.h" 
 #include "Games/Large_Tic_Tac_Toe/Large_Tic_Tac_Toe.h" ///> Required for the game Board and UI
 #include "Games/PyramidXO/PyramidXO.h" ///> Required for the game Board and UI
 #include "header/BoardGame_Classes.h"
 #include "header/XO_Classes.h"
+#include "Games/Word_Tic_Tac_Toe/Word_Tic_Tac_Toe.h"
 
 #include "header/BoardGame_Classes.h"
 #include "header/XO_Classes.h"
@@ -81,21 +83,23 @@ int main() {
         cout << "4) Anti XO\n";
         cout << "5) 5x5 XO (Large Tic-Tac-Toe)\n";
         cout << "6) Numerical Tic-Tac-Toe\n";
-        cout << "7) Pyramid XO\n";
-        cout << "8) Exit\n";
+        cout << "7) Ultimate Tic-Tac-Toe\n";
+        cout << "8) Pyramid XO\n";
+        cout << "9) Word XO\n";
+        cout << "10) Exit\n";
         cout << "=======================================================\n";
-        cout << "Enter your choice [1-8]: ";
+        cout << "Enter your choice [1-9]: ";
 
         try {
             if (!(cin >> choice)) {
                 throw runtime_error("Invalid input: must be an integer.");
             }
 
-            if (choice < 1 || choice > 8) {
-                throw out_of_range("Choice must be an integer between 1 and 8.");
+            if (choice < 1 || choice > 10) {
+                throw out_of_range("Choice must be an integer between 1 and 6.");
             }
 
-            if (choice == 8) {
+            if (choice == 10) {
                 cout << "Exiting the game. Goodbye!\n";
                 finish = true;
                 continue;
@@ -132,8 +136,16 @@ int main() {
                     game_board = new XO_NUM_Board();
                     break;
                 case 7:
+                    game_ui = new Ultimate_UI();
+                    game_board = new Ultimate_Board();
+                    break;
+                case 8:
                     game_ui = new  PyramidXO_UI();
                     game_board = new PyramidXO_Board();
+                    break;
+                case 9:
+                    game_ui = new  Word_XO_UI();
+                    game_board = new Word_XO_Board();
                     break;
                 default:
                     throw out_of_range("Unexpected choice value.");
