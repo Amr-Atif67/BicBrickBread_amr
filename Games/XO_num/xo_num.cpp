@@ -1,9 +1,7 @@
-
 #include <iostream>
 #include <iomanip>
 #include <cctype>
 #include "xo_num.h"
-
 
 XO_NUM_Board::XO_NUM_Board() : Board(3, 3)
 {
@@ -138,7 +136,7 @@ Move<char> *XO_NUM_UI::get_move(Player<char> *player)
       }
        else if (player->get_symbol()=='1'){
        while (!exist(odd,num) ){
-            cout<<"Please chose from your numbers\n";
+            cout<<"Please choose from your numbers\n";
               for (char x : odd){
                cout << x << " ";
               }
