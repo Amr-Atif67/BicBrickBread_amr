@@ -63,20 +63,21 @@ int main() {
         cout << "4) Anti XO\n";
         cout << "5) 5x5 XO (Large Tic-Tac-Toe)\n";
         cout << "6) Numerical Tic-Tac-Toe\n";
-        cout << "7) Exit\n";
+        cout << "7) Diamond Tic-Tac-Toe \n";
+        cout << "8) Exit\n";
         cout << "=======================================================\n";
-        cout << "Enter your choice [1-7]: ";
+        cout << "Enter your choice [1-8]: ";
 
         try {
             if (!(cin >> choice)) {
                 throw runtime_error("Invalid input: must be an integer.");
             }
 
-            if (choice < 1 || choice > 7) {
+            if (choice < 1 || choice > 8) {
                 throw out_of_range("Choice must be an integer between 1 and 6.");
             }
 
-            if (choice == 7) {
+            if (choice == 8) {
                 cout << "Exiting the game. Goodbye!\n";
                 finish = true;
                 continue;
@@ -111,6 +112,8 @@ int main() {
                 case 6:
                     game_ui = new  XO_NUM_UI();
                     game_board = new XO_NUM_Board();
+                    break;
+                case 7:
                     break;
                 default:
                     throw out_of_range("Unexpected choice value.");
