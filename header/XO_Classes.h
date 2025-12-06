@@ -11,7 +11,8 @@
 #define XO_CLASSES_H
 
 #include "BoardGame_Classes.h"
-// #include "../../header/AI.h"
+#include "AI.h"
+#include "Custom_UI.h"
 using namespace std;
 
 /**
@@ -53,7 +54,7 @@ public:
      * @param player Pointer to the player being checked.
      * @return Always returns false (not used in X-O logic).
      */
-    bool is_lose(Player<char>*) { return false; };
+    bool is_lose(Player<char>*);
 
     /**
      * @brief Checks if the game has ended in a draw.
@@ -83,9 +84,7 @@ public:
  *
  * @see UI
  */
-class XO_UI : public UI<char> {
-
-
+class XO_UI : public Custom_UI<char>, public AI {
 public:
 
     /**
@@ -99,20 +98,6 @@ public:
      * @brief Destructor for XO_UI.
      */
     ~XO_UI() {};
-
-    /**
-     * @brief Setup Players
-     */
-    Player<char>** setup_players() override;
-
-    /**
-     * @brief Creates a player of the specified type.
-     * @param name Name of the player.
-     * @param symbol Character symbol ('X' or 'O') assigned to the player.
-     * @param type The type of the player (Human or Computer).
-     * @return Pointer to the newly created Player<char> instance.
-     */
-    Player<char>* create_player(string& name, char symbol, PlayerType type);
 
     /**
      * @brief Retrieves the next move from a player.
