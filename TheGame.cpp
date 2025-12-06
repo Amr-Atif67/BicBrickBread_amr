@@ -14,6 +14,7 @@
 
 #include "Games/XO_inf/XO_inf.h" 
 #include "Games/Four_in_a_row/four.h" 
+#include "Games/SUS/SUS.h"
 #include "Games/XO_num/xo_num.h" 
 #include "Games/Ultimate_Tic_Tac_Toe/Ultimate.h" 
 #include "Games/anti_XO/Anti_XO.h" 
@@ -81,20 +82,21 @@ int main() {
         cout << "10) Obstacles Tic-Tac-Toe XO\n";
         cout << "11) Memory Tic-Tac-Toe XO\n";
         cout << "12) 4x4 Tic-Tac-Toe\n";
-        cout << "13) Exit\n";
+        cout << "13) SUS\n";
+        cout << "14) Exit\n";
         cout << "=======================================================\n";
-        cout << "Enter your choice [1-13]: ";
+        cout << "Enter your choice [1-14]: ";
 
         try {
             if (!(cin >> choice)) {
                 throw runtime_error("Invalid input: must be an integer.");
             }
 
-            if (choice < 1 || choice > 13) {
+            if (choice < 1 || choice > 14) {
                 throw out_of_range("Choice must be an integer between 1 and 13.");
             }
 
-            if (choice == 13) {
+            if (choice == 14) {
                 cout << "Exiting the game. Goodbye!\n";
                 finish = true;
                 continue;
@@ -155,6 +157,10 @@ int main() {
                 case 12:
                     game_ui = new _4by4XO_UI();
                     game_board = new _4by4XO_Board();
+                    break;
+                case 13:
+                    game_ui = new SUS_UI();
+                    game_board = new SUS_Board();
                     break;
                 default:
                     throw out_of_range("Unexpected choice value.");
