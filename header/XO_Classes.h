@@ -68,7 +68,10 @@ public:
      * @return true if the game has ended, false otherwise.
      */
     bool game_is_over(Player<char>* player);
+   
 };
+
+
 
 
 /**
@@ -81,7 +84,10 @@ public:
  * @see UI
  */
 class XO_UI : public UI<char> {
+
+
 public:
+
     /**
      * @brief Constructs an XO_UI object.
      *

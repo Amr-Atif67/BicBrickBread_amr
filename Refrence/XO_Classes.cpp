@@ -106,10 +106,6 @@ Player<char> **XO_UI::setup_players()
 
 Player<char> *XO_UI::create_player(string &name, char symbol, PlayerType type)
 {
-    // Create player based on type
-    cout << "Creating " << (type == PlayerType::HUMAN ? "human" : "computer")
-         << " player: " << name << " (" << symbol << ")\n";
-
     return new Player<char>(name, symbol, type);
 }
 
@@ -121,12 +117,17 @@ Move<char> *XO_UI::get_move(Player<char> *player)
         cout << player->get_name() << " (" << player->get_symbol()
         << ") enter your move (row col): ";
         cin >> r >> c;
-    } else if (player->get_type() == PlayerType::COMPUTER) {
-        r = std::rand()%5, c = std::rand()%5;
-     } //else if (player->get_type() == PlayerType::AI) {
-    //     std::pair move = AI::bestMove(player, true);
-    //     r = move.first, c = move.second;
-    // }
+        OOP=player->get_symbol();}
+    // } else if (player->get_type() == PlayerType::COMPUTER) {
+    //     r = std::rand()%5, c = std::rand()%5;
+    //  } 
+    else if (player->get_type() == PlayerType::COMPUTER) {
+        AI=player->get_symbol();
+        auto* b = player->get_board_ptr();
+        XO_UI::moove mov = XO_UI::findBestMove(b->get_board_matrix());
+
+        r = mov.row, c = mov.col;
+    }
     
     return new Move<char>(r, c, player->get_symbol());
 }

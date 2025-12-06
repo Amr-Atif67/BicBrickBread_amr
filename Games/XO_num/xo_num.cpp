@@ -85,10 +85,6 @@ Player<char>**XO_NUM_UI::setup_players() {
 }
 Player<char> *XO_NUM_UI::create_player(string &name, char symbol, PlayerType type)
 {
-    // Create player based on type
-    cout << "Creating " << (type == PlayerType::HUMAN ? "human" : "computer")
-         << " player: " << name << " (" << symbol << ")\n";
-
     return new Player<char>(name, symbol, type);
 }
 
@@ -102,12 +98,12 @@ Move<char> *XO_NUM_UI::get_move(Player<char> *player)
         cin >> x >> y;
         // ask user to enter his choice
         cout<<"\n Please enter your num\n";
-        if (player->get_symbol()=='2'){
+        if (player->get_symbol()=='2'  && !even.empty()){
               for (char x : even){
                cout <<x << " ";
             }
         }
-        else if (player->get_symbol()=='1'){
+        else if (player->get_symbol()=='1'  && !odd.empty()){
               for (char x : odd)
                cout << x << " "; 
             }
@@ -149,14 +145,14 @@ Move<char> *XO_NUM_UI::get_move(Player<char> *player)
     {
         x = rand() % player->get_board_ptr()->get_rows();
         y = rand() % player->get_board_ptr()->get_columns();
-        if (player->get_symbol()=='2'){
+        if (player->get_symbol()=='2'  && !even.empty()){
             // random choice by index
               index =rand() % even.size();
               num=even[index];
               even.erase(even.begin() + index);
             
         }
-       else if (player->get_symbol()=='1'){
+       else if (player->get_symbol()=='1' && !odd.empty()){
               index =rand() % odd.size();
               num=odd[index];
               odd.erase(odd.begin() + index);

@@ -19,6 +19,7 @@
 #include <limits>      // Required for input clearing
 #include <stdexcept>   // Required for exceptions
 
+#include "Games/SUS/SUS.h"
 #include "Games/XO_inf/XO_inf.h" 
 #include "Games/Four_in_a_row/four.h" 
 #include "Games/XO_num/xo_num.h" 
@@ -84,20 +85,21 @@ int main() {
         cout << "6) Numerical Tic-Tac-Toe\n";
         cout << "7) Ultimate Tic-Tac-Toe\n";
         cout << "8) Pyramid XO\n";
-        cout << "9) Exit\n";
+        cout << "9) SUS \n";
+        cout << "10) Exit\n";
         cout << "=======================================================\n";
-        cout << "Enter your choice [1-9]: ";
+        cout << "Enter your choice [1-10]: ";
 
         try {
             if (!(cin >> choice)) {
                 throw runtime_error("Invalid input: must be an integer.");
             }
 
-            if (choice < 1 || choice > 9) {
+            if (choice < 1 || choice > 10) {
                 throw out_of_range("Choice must be an integer between 1 and 6.");
             }
 
-            if (choice == 9) {
+            if (choice == 10) {
                 cout << "Exiting the game. Goodbye!\n";
                 finish = true;
                 continue;
@@ -140,6 +142,10 @@ int main() {
                 case 8:
                     game_ui = new  PyramidXO_UI();
                     game_board = new PyramidXO_Board();
+                    break;
+                case 9:
+                    game_ui=new SUS_UI();
+                    game_board= new SUS_Board();
                     break;
                 default:
                     throw out_of_range("Unexpected choice value.");

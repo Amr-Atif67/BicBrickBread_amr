@@ -10,15 +10,6 @@ Ultimate_Board::Ultimate_Board() : Board(9, 9)
         for (auto &cell : row)
             cell = blank_symbol;
     }
-
-    for (int i = 0; i < 3; ++i)
-    {
-        for (int j = 0; j < 3; ++j)
-        {
-            large_board[i][j] = blank_symbol;
-        }
-    }
-    check=0;
   
 }
 void  Ultimate_Board::small_board_check(int x,int y, char sym){
@@ -28,7 +19,6 @@ void  Ultimate_Board::small_board_check(int x,int y, char sym){
         return a == b && b == c && a != blank_symbol;
     };
   
-        
          bool win = false;
          bool full = true;
          int row_start = (x / 3) * 3; 
@@ -96,8 +86,14 @@ bool Ultimate_Board::update_board(Move<char> *move)
             board[x][y] = toupper(mark);
         }
          small_board_check(x,y,mark);
-        
-
+         // These lines display the large board
+        // I think this logic should be moved to the UI class
+       cout << "\nLarge Board (3x3 of small boards results):\n";
+       for(int i=0;i<3;i++){
+          for(int j=0;j<3;j++){cout << setw(3) << large_board[i][j] << " ";}
+          cout << endl;
+       }
+        cout << endl;
       return true;
     }
 
@@ -145,10 +141,6 @@ Ultimate_UI::Ultimate_UI() : UI<char>("Ultimate Tic_Tac_TOe", 3) {}
 
 Player<char> *Ultimate_UI::create_player(string &name, char symbol, PlayerType type)
 {
-    // Create player based on type
-    cout << "Creating " << (type == PlayerType::HUMAN ? "human" : "computer")
-         << " player: " << name << " (" << symbol << ")\n";
-
     return new Player<char>(name, symbol, type);
 }
 void Ultimate_UI::display_board_matrix(const vector<vector<char>>& matrix) const {
@@ -165,10 +157,17 @@ void Ultimate_UI::display_board_matrix(const vector<vector<char>>& matrix) const
         for (int i = 0; i < rows; ++i) {
             cout << setw(2) << i << " |";
             for (int j = 0; j < cols; ++j)
-                cout << setw(cell_width) << matrix[i][j] << " |";
-            cout << "\n   " << string((cell_width + 2) * cols, '-') << "\n";
+                  if (j==2||j==5){
+                          cout << setw(cell_width) << matrix[i][j] << " ||";
+                  }
+                  else{cout << setw(cell_width) << matrix[i][j] << " |";}
+            if (i==2||i==5){cout << "\n   " << string((cell_width + 2) * cols, '=') << "\n";}
+            else{cout << "\n   " << string((cell_width + 2) * cols, '-') << "\n";}
+            
         }
         cout << endl;
+        
+
     }
 
 Move<char> *Ultimate_UI::get_move(Player<char> *player)
